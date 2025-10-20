@@ -1,0 +1,37 @@
+meta {
+  name: Send Usage
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{credytApiUrl}}/usage
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "customer_id": "ext_{{customerExternalId}}",
+    "events": [
+      {
+        "id": "{{$randomUUID}}",
+        "event_type": "video_promoted",
+        "occurred_at": "{{$isoTimestamp}}",
+        "subject": "video_5f53d23a4958",
+        "description": "Video Promoted",
+        "data": {
+          "promo_id": "pro_4tbftjwzxja1h71nzas1g0g1xm"
+        }
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+}

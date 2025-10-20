@@ -1,0 +1,15 @@
+meta {
+  name: Check Customer Account Balance
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{credytApiUrl}}/customers/{{customerId}}/wallet/default:USD
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,15 @@
+meta {
+  name: Check Customer Balances
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{credytApiUrl}}/customers/{{customerId}}/wallet
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
