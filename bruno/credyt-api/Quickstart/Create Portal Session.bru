@@ -1,0 +1,30 @@
+meta {
+  name: Create Portal Session
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{credytApiUrl}}/billing-portal/sessions
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "customer_id": "{{customerId}}",
+    "return_url": "https://glitch.ai/account",
+    "failure_url": "https://glitch.ai/callbacks/credyt/failure"
+  }
+}
+
+script:post-response {
+  let data = res.body.redirect_url;
+  const token = data.split('token=')[1];
+  bru.setEnvVar("token", token);
+  
+}
+
+settings {
+  encodeUrl: true
+}
