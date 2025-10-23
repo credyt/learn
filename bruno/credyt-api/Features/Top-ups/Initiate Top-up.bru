@@ -1,0 +1,37 @@
+meta {
+  name: Initiate Fiat Top-up copy
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{credytApiUrl}}/top-ups
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "customer_id": "cust_473cr1y0ghbyc3m1yfbwvn3nxx",
+    "amount": 20.00,
+    "currency": "USD",
+    "description": "Video Promotion Credits",
+    "return_url": "https://glitch.ai/account",
+    "failure_url": "https://glitch.ai/callbacks/credyt-failure"
+  }
+}
+
+script:pre-request {
+  const moment = require('moment');
+  const expiresAt = moment().add(1, 'month').toISOString();
+  
+  bru.setVar("expires_at", expiresAt)
+  
+  
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

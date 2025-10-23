@@ -1,7 +1,7 @@
 meta {
   name: Send Usage
   type: http
-  seq: 4
+  seq: 3
 }
 
 post {
@@ -20,12 +20,24 @@ body:json {
     "events": [
       {
         "id": "{{$randomUUID}}",
-        "event_type": "video_promoted",
+        "event_type": "video_generated",
         "occurred_at": "{{$isoTimestamp}}",
         "subject": "video_{{$randomUUID}}",
-        "description": "Video Promoted",
+        "description": "Video Generated",
         "data": {
-          "promo_id": "pro_{{$randomUUID}}"
+          "minutes": 10,
+          "speed": "fast"
+        }
+      },
+      {
+        "id": "{{$randomUUID}}",
+        "event_type": "video_generated",
+        "occurred_at": "{{$isoTimestamp}}",
+        "subject": "video_{{$randomUUID}}",
+        "description": "Video Generated",
+        "data": {
+          "minutes": 100,
+          "speed": "slow"
         }
       }
     ]

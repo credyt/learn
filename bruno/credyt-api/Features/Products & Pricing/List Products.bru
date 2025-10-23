@@ -1,0 +1,16 @@
+meta {
+  name: List Products
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{credytApiUrl}}/products
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,80 @@
+meta {
+  name: Create a Product
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{credytApiUrl}}/products
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Glitch Video Advanced",
+    "code": "glitch_video_adv",
+    "prices": [
+      {
+        "name": "Video Generation Compute",
+        "type": "usage_based",
+        "billing_model": {
+          "type": "real_time"
+        },
+        "usage_calculation": {
+          "event_type": "video_generated",
+          "usage_type": "unit_and_volume",
+          "volume_field": "minutes",
+          "source_reference_field": "video_id",
+          "billable_dimensions": ["speed"]
+        },
+        "pricing": [
+          {
+            "asset": "USD",
+            "values": [
+              {
+                "name": "Video Generation Minutes (Fast)",
+                "dimensions": {
+                  "speed": "fast"
+                },
+                "values": [
+                  {
+                    "volume_rate": 1
+                  }
+                ]
+              },
+              {
+                "name": "Video Generation Minutes (Regular)",
+                "dimensions": {
+                  "speed": "regular"
+                },
+                "values": [
+                  {
+                    "volume_rate": 0.4
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "publish": true
+  }
+}
+
+script:post-response {
+  if(res.status === 201){
+    const responseJson = res.getBody();
+  
+    if (responseJson && responseJson.id) {
+      bru.setEnvVar("productId", responseJson.id);
+      bru.setEnvVar("productCode", responseJson.code);
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

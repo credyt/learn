@@ -1,0 +1,45 @@
+meta {
+  name: Simulate Product Usage
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{credytApiUrl}}/products/{{productId}}/default/simulate-usage
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "events": [
+      {
+        "id": "{{$randomUUID}}",
+        "event_type": "video_generated",
+        "occurred_at": "{{$isoTimestamp}}",
+        "subject": "video_{{$randomUUID}}",
+        "description": "Video Generated",
+        "data": {
+          "minutes": 10,
+          "speed": "fast"
+        }
+      },
+      {
+        "id": "{{$randomUUID}}",
+        "event_type": "video_generated",
+        "occurred_at": "{{$isoTimestamp}}",
+        "subject": "video_{{$randomUUID}}",
+        "description": "Video Generated",
+        "data": {
+          "minutes": 100,
+          "speed": "slow"
+        }
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
