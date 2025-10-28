@@ -1,0 +1,20 @@
+meta {
+  name: Get Customer by External ID
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{credytApiUrl}}/customers?external_id={{customerExternalId}}
+  body: none
+  auth: inherit
+}
+
+params:query {
+  external_id: {{customerExternalId}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
