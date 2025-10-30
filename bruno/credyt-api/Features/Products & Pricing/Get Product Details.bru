@@ -1,11 +1,11 @@
 meta {
-  name: List Products
+  name: Get Product Details
   type: http
-  seq: 1
+  seq: 3
 }
 
 get {
-  url: {{credytApiUrl}}/products
+  url: {{credytApiUrl}}/products/{{productId}}
   body: none
   auth: inherit
 }
