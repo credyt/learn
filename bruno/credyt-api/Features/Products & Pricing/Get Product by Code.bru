@@ -1,0 +1,30 @@
+meta {
+  name: Get Product by Code
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{credytApiUrl}}/products?code={{productCode}}
+  body: none
+  auth: inherit
+}
+
+params:query {
+  code: {{productCode}}
+}
+
+script:post-response {
+  if(res.status === 200){
+    const responseJson = res.getBody();
+  
+    if (responseJson && responseJson.id) {
+      bru.setEnvVar("productId", responseJson.id);
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
