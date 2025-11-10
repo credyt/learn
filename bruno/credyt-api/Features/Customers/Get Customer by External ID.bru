@@ -14,6 +14,18 @@ params:query {
   external_id: {{customerExternalId}}
 }
 
+script:post-response {
+  if(res.status === 200){
+    const responseJson = res.getBody();
+  
+    if (responseJson && responseJson.id) {
+      bru.setEnvVar("customerId", responseJson.id);
+      bru.setEnvVar("customerExternalId", responseJson.external_id);
+  
+    }
+  }
+}
+
 settings {
   encodeUrl: true
   timeout: 0

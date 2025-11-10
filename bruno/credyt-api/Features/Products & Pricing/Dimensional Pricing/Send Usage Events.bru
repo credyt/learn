@@ -1,11 +1,11 @@
 meta {
-  name: Send Usage
+  name: Send Usage Events
   type: http
   seq: 3
 }
 
 post {
-  url: {{credytApiUrl}}/usage
+  url: {{credytApiUrl}}/events
   body: json
   auth: inherit
 }
