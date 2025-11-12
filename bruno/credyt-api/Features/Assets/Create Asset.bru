@@ -1,0 +1,29 @@
+meta {
+  name: Create Asset
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{credytApiUrl}}/assets
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "code": "VIDGENMIN",
+    "name": "Video Generation Minutes",
+    "precision": 2,
+    "label": "MIN"
+  }
+}
+
+script:pre-request {
+  bru.setEnvVar("assetCode", req.getBody().code);
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
