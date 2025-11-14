@@ -1,0 +1,26 @@
+meta {
+  name: List Events
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{credytApiUrl}}/events
+  body: none
+  auth: inherit
+}
+
+script:post-response {
+  if(res.status === 200){
+    const responseJson = res.getBody();
+  
+    if (responseJson && responseJson.items.length) {
+      bru.setEnvVar("eventId", responseJson.items[0].id);
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

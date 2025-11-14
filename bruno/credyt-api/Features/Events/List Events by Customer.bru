@@ -1,0 +1,30 @@
+meta {
+  name: List Events by Customer
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{credytApiUrl}}/events?customer_id={{customerId}}
+  body: none
+  auth: inherit
+}
+
+params:query {
+  customer_id: {{customerId}}
+}
+
+script:post-response {
+  if(res.status === 200){
+    const responseJson = res.getBody();
+  
+    if (responseJson && responseJson.items.length) {
+      bru.setEnvVar("eventId", responseJson.items[0].id);
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

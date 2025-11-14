@@ -1,0 +1,31 @@
+meta {
+  name: Get the demo Product
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{credytApiUrl}}/products?code={{demoProductCode}}
+  body: none
+  auth: inherit
+}
+
+params:query {
+  code: {{demoProductCode}}
+}
+
+script:post-response {
+  if(res.status === 200){
+    const responseJson = res.getBody();
+  
+    if (responseJson && responseJson.id) {
+      bru.setEnvVar("productId", responseJson.id);
+      bru.setEnvVar("productCode", responseJson.code);
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
