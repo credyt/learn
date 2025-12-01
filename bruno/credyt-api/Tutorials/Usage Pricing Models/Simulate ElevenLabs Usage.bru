@@ -1,0 +1,33 @@
+meta {
+  name: Simulate ElevenLabs Usage
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{credytApiUrl}}/products/{{elevenLabsProductId}}/default/simulate-usage
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "events": [
+      {
+        "id": "{{$randomUUID}}",
+        "event_type": "speech_generated",
+        "occurred_at": "{{$isoTimestamp}}",
+        "subject": "text2speech_{{$randomUUID}}",
+        "description": "Speech Generated",
+        "data": {
+          "minutes": 10
+        }
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

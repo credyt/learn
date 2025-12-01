@@ -1,0 +1,26 @@
+meta {
+  name: Pre-fund Customer Balance
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{credytApiUrl}}/customers/{{customerId}}/wallet/adjustments
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "transaction_id": "{{$randomUUID}}",
+    "asset": "USD",
+    "amount": 100,
+    "description": "Sign up bonus",
+    "reason": "external_topup"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,30 @@
+meta {
+  name: Simulate Intercom Usage
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{credytApiUrl}}/products/{{intercomProductId}}/default/simulate-usage
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "events": [
+      {
+        "id": "{{$randomUUID}}",
+        "event_type": "ticket_resolved",
+        "occurred_at": "{{$isoTimestamp}}",
+        "subject": "ticket_{{$randomUUID}}",
+        "description": "Ticket Resolved"
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

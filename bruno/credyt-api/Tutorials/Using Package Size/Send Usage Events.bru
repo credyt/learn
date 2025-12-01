@@ -1,0 +1,39 @@
+meta {
+  name: Send Usage Events
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{credytApiUrl}}/events
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "customer_id": "{{customerId}}",
+    "events": [
+      {
+        "id": "{{$randomUUID}}",
+        "event_type": "response_completed",
+        "occurred_at": "{{$isoTimestamp}}",
+        "subject": "response_{{$randomUUID}}",
+        "description": "Response Completed",
+        "data": {
+          "input_tokens": 1000000,
+          "output_tokens": 1000000
+        }
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

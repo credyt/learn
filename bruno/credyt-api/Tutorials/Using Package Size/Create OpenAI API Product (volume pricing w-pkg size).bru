@@ -1,0 +1,83 @@
+meta {
+  name: Create OpenAI API Product (volume pricing w/pkg size)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{credytApiUrl}}/products
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "OpenAI API",
+    "code": "openai_api_gpt",
+    "prices": [
+      {
+        "name": "GPT 5.1 Input Tokens",
+        "type": "usage_based",
+        "billing_model": {
+          "type": "real_time"
+        },
+        "usage_calculation": {
+          "event_type": "response_completed",
+          "usage_type": "volume",
+          "volume_field": "input_tokens"
+        },
+        "pricing": [
+          {
+            "asset": "USD",
+            "values": [
+              {
+                "volume_rate": 1.250,
+                "package_size": 1000000
+              }
+            ]
+          }
+        ]
+      },
+  {
+        "name": "GPT 5.1 Output Tokens",
+        "type": "usage_based",
+        "billing_model": {
+          "type": "real_time"
+        },
+        "usage_calculation": {
+          "event_type": "response_completed",
+          "usage_type": "volume",
+          "volume_field": "output_tokens"
+        },
+        "pricing": [
+          {
+            "asset": "USD",
+            "values": [
+              {
+                "volume_rate": 10.00,
+                "package_size": 1000000
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "publish": true
+  }
+}
+
+script:post-response {
+  if(res.status === 201){
+    const responseJson = res.getBody();
+  
+    if (responseJson && responseJson.id) {
+      bru.setEnvVar("openAIProductId", responseJson.id);
+      bru.setEnvVar("openAIProductCode", responseJson.code);
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

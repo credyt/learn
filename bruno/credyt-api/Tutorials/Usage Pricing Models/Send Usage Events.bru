@@ -1,0 +1,45 @@
+meta {
+  name: Send Usage Events
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{credytApiUrl}}/events
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "customer_id": "{{customerId}}",
+    "events": [
+      {
+        "id": "{{$randomUUID}}",
+        "event_type": "ticket_resolved",
+        "occurred_at": "{{$isoTimestamp}}",
+        "subject": "ticket_{{$randomUUID}}",
+        "description": "Ticket Resolved"
+      },
+      {
+        "id": "{{$randomUUID}}",
+        "event_type": "speech_generated",
+        "occurred_at": "{{$isoTimestamp}}",
+        "subject": "text2speech_{{$randomUUID}}",
+        "description": "Speech Generated",
+        "data": {
+          "minutes": 10
+        }
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

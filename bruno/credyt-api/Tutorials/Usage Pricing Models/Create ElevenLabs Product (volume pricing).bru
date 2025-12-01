@@ -1,0 +1,59 @@
+meta {
+  name: Create ElevenLabs Product (volume pricing)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{credytApiUrl}}/products
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "ElevenLabs API",
+    "code": "eleven_labs_api",
+    "prices": [
+      {
+        "name": "Text to Speech API",
+        "type": "usage_based",
+        "billing_model": {
+          "type": "real_time"
+        },
+        "usage_calculation": {
+          "event_type": "speech_generated",
+          "usage_type": "volume",
+          "volume_field": "minutes"
+        },
+        "pricing": [
+          {
+            "asset": "USD",
+            "values": [
+              {
+                "volume_rate": 0.15
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "publish": true
+  }
+}
+
+script:post-response {
+  if(res.status === 201){
+    const responseJson = res.getBody();
+  
+    if (responseJson && responseJson.id) {
+      bru.setEnvVar("elevenLabsProductId", responseJson.id);
+      bru.setEnvVar("elevenLabsProductCode", responseJson.code);
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

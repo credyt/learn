@@ -1,0 +1,58 @@
+meta {
+  name: Create Intercom Product (unit pricing)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{credytApiUrl}}/products
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Intercom Fin AI",
+    "code": "intercom_fin_ai",
+    "prices": [
+      {
+        "name": "Ticket Resolution",
+        "type": "usage_based",
+        "billing_model": {
+          "type": "real_time"
+        },
+        "usage_calculation": {
+          "event_type": "ticket_resolved",
+          "usage_type": "unit"
+        },
+        "pricing": [
+          {
+            "asset": "USD",
+            "values": [
+              {
+                "unit_price": 0.99
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "publish": true
+  }
+}
+
+script:post-response {
+  if(res.status === 201){
+    const responseJson = res.getBody();
+  
+    if (responseJson && responseJson.id) {
+      bru.setEnvVar("intercomProductId", responseJson.id);
+      bru.setEnvVar("intercomProductCode", responseJson.code);
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

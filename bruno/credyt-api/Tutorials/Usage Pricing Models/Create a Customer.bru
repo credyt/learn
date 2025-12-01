@@ -1,0 +1,54 @@
+meta {
+  name: Create a Customer
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{credytApiUrl}}/customers
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "{{$randomFullName}}",
+    "external_id": "{{customerExternalId}}",
+    "subscriptions": [
+      {
+        "products": [
+          {
+            "code": "{{intercomProductCode}}"
+          },
+          {
+            "code": "{{elevenLabsProductCode}}"
+          }
+        ]
+      }
+    ]
+  }
+}
+
+script:pre-request {
+  const { v4 } = require('uuid');
+  
+  const generateUuidWithoutHyphens = () => v4().replace(/-/g,"");
+  
+  const externalId = `${generateUuidWithoutHyphens()}`;
+  bru.setVar("customerExternalId", externalId);
+}
+
+script:post-response {
+  if(res.status === 201){
+    const responseJson = res.getBody();
+  
+    if (responseJson && responseJson.id) {
+      bru.setEnvVar("customerId", responseJson.id);
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
