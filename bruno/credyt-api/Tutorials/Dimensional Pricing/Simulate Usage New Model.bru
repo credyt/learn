@@ -1,0 +1,33 @@
+meta {
+  name: Simulate Usage New Model
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{credytApiUrl}}/products/{{productId}}/{{productVersion}}/simulate-usage
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "events": [
+      {
+        "id": "{{$randomUUID}}",
+        "event_type": "image_generated",
+        "occurred_at": "{{$isoTimestamp}}",
+        "subject": "img_{{$randomUUID}}",
+        "description": "Image Generated",
+        "data": {
+          "model": "gli-2-1"
+        }
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

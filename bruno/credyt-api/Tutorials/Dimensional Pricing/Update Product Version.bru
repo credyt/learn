@@ -1,0 +1,23 @@
+meta {
+  name: Update Product Version
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{credytApiUrl}}/products/{{productId}}/{{productVersion}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "publish": true,
+    "make_default": true
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

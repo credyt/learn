@@ -1,0 +1,58 @@
+meta {
+  name: Send Usage Events
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{credytApiUrl}}/events
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "customer_id": "{{customerId}}",
+    "events": [
+      {
+        "id": "{{$randomUUID}}",
+        "event_type": "image_generated",
+        "occurred_at": "{{$isoTimestamp}}",
+        "subject": "img_{{$randomUUID}}",
+        "description": "Image Generated",
+        "data": {
+          "model": "gli-1-0"
+        }
+      },
+      {
+        "id": "{{$randomUUID}}",
+        "event_type": "image_generated",
+        "occurred_at": "{{$isoTimestamp}}",
+        "subject": "img_{{$randomUUID}}",
+        "description": "Image Generated",
+        "data": {
+          "model": "gli-2-0"
+        }
+      },
+      {
+        "id": "{{$randomUUID}}",
+        "event_type": "image_generated",
+        "occurred_at": "{{$isoTimestamp}}",
+        "subject": "img_{{$randomUUID}}",
+        "description": "Image Generated vNext",
+        "data": {
+          "model": "gli-2-1"
+        }
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

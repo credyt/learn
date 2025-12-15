@@ -1,0 +1,30 @@
+meta {
+  name: Simulate Usage
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{credytApiUrl}}/products/{{productId}}/1/simulate-usage
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "events": [
+      {
+        "id": "{{$randomUUID}}",
+        "event_type": "image_generated",
+        "occurred_at": "{{$isoTimestamp}}",
+        "subject": "img_{{$randomUUID}}",
+        "description": "Image Generated"
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

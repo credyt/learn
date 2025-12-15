@@ -1,0 +1,79 @@
+meta {
+  name: Update Product with Model Pricing
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{credytApiUrl}}/products/{{productId}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Glitch Images",
+    "prices": [
+      {
+        "name": "Image Generation",
+        "type": "usage_based",
+        "billing_model": {
+          "type": "real_time"
+        },
+        "usage_calculation": {
+          "event_type": "image_generated",
+          "usage_type": "unit",
+          "billable_dimensions": [
+            "model"
+          ]
+        },
+        "pricing": [
+          {
+            "asset": "USD",
+            "values": [
+              {
+                "dimensions": {
+                  "model": "gli-1-0"
+                },
+                "values": [
+                  {
+                    "name": "Glitchy 1.0",
+                    "unit_price": 0.05
+                  }
+                ]
+              },
+              {
+                "dimensions": {
+                  "model": "gli-2-0"
+                },
+                "values": [
+                  {
+                    "name": "Glitchy 2.0",
+                    "volume_rate": 0.10
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "publish": true
+  }
+}
+
+script:post-response {
+  if(res.status === 201){
+    const responseJson = res.getBody();
+  
+    if (responseJson && responseJson.id) {
+      bru.setEnvVar("productId", responseJson.id);
+      bru.setEnvVar("productVersion", responseJson.version);
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
