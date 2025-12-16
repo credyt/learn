@@ -10,6 +10,17 @@ get {
   auth: inherit
 }
 
+script:post-response {
+  if(res.status === 200){
+    const responseJson = res.getBody();
+  
+    if (responseJson && responseJson.id) {
+      bru.setEnvVar("productCode", responseJson.code);
+      bru.setEnvVar("latestProductVersion", responseJson.versions[0].version);
+    }
+  }
+}
+
 settings {
   encodeUrl: true
   timeout: 0
