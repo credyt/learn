@@ -1,0 +1,20 @@
+meta {
+  name: Get Account by External ID
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{credytApiUrl}}/accounts?external_id={{connectedAccountExternalId}}
+  body: none
+  auth: inherit
+}
+
+params:query {
+  external_id: {{connectedAccountExternalId}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

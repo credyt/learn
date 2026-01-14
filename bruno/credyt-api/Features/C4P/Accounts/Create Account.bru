@@ -1,0 +1,44 @@
+meta {
+  name: Create Account
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{credytApiUrl}}/accounts
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "{{$randomCompanyName}}",
+    "external_id": "{{connectedAccountExternalId}}",
+    "metadata": {
+      "config_id": "{{$guid}}"
+    }
+  }
+}
+
+script:pre-request {
+  const { v4 } = require('uuid');
+  
+  const generateUuidWithoutHyphens = () => v4().replace(/-/g,"");
+  const externalId = `${generateUuidWithoutHyphens()}`;
+  bru.setVar("connectedAccountExternalId", externalId);
+}
+
+script:post-response {
+  if(res.status === 201){
+    const responseJson = res.getBody();
+  
+    if (responseJson && responseJson.id) {
+      bru.setEnvVar("connectedAccountId", responseJson.id);
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

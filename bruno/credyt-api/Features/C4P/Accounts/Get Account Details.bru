@@ -1,0 +1,26 @@
+meta {
+  name: Get Account Details
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{credytApiUrl}}/accounts/{{connectedAccountId}}
+  body: none
+  auth: inherit
+}
+
+script:post-response {
+  if(res.status === 200){
+    const responseJson = res.getBody();
+  
+    if (responseJson && responseJson.id) {
+      bru.setEnvVar("connectedAccountExternalId", responseJson.external_id);
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
