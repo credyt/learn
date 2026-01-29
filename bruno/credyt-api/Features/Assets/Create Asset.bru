@@ -1,7 +1,7 @@
 meta {
   name: Create Asset
   type: http
-  seq: 2
+  seq: 1
 }
 
 post {
@@ -12,10 +12,16 @@ post {
 
 body:json {
   {
-    "code": "VIDGENMIN",
+    "code": "VIDGENMINX",
     "name": "Video Generation Minutes",
     "precision": 2,
-    "label": "MIN"
+    "label": "MIN",
+    "rates": [
+      {
+        "source": "USD",
+        "rate": 0.10
+      }
+    ]
   }
 }
 
