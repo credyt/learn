@@ -1,2 +1,3 @@
-# Ignore dev environment testing
-*.dev.bru
+# Ignore dev and local environment testing
+dev.*.bru
+local.*.bru

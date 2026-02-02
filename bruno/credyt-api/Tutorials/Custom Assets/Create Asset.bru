@@ -1,0 +1,36 @@
+meta {
+  name: Create Asset
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{credytApiUrl}}/assets
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "code": "IMG",
+    "name": "Image Generation",
+    "precision": 2,
+    "label": "image",
+    "symbol": "📸",
+    "rates": [
+      {
+        "source": "USD",
+        "rate": 0.10
+      }
+    ]
+  }
+}
+
+script:pre-request {
+  bru.setEnvVar("assetCode", req.getBody().code);
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,40 @@
+meta {
+  name: Send Usage Event
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{credytApiUrl}}/events
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "customer_id": "{{customerId}}",
+    "events": [
+      {
+        "id": "{{eventId}}",
+        "event_type": "image_generated",
+        "occurred_at": "{{$isoTimestamp}}",
+        "subject": "img_{{$randomUUID}}",
+        "description": "Image Generated"
+      }
+    ]
+  }
+}
+
+script:pre-request {
+  const { v4 } = require('uuid');
+  bru.setVar("eventId", v4());
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
