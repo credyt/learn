@@ -1,0 +1,49 @@
+meta {
+  name: Initiate Custom Asset Top-up
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{credytApiUrl}}/top-ups
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "customer_id": "{{customerId}}",
+    "amount": 1,
+    "currency": "USD",
+    "destination": {
+      "asset": "{{assetCode}}"
+    },
+    "return_url": "https://glitch.ai/account",
+    "failure_url": "https://glitch.ai/callbacks/credyt/failure"
+  }
+}
+
+script:pre-request {
+  const moment = require('moment');
+  const expiresAt = moment().add(1, 'month').toISOString();
+  
+  bru.setVar("expires_at", expiresAt)
+  
+  
+  
+}
+
+script:post-response {
+  if(res.status === 201){
+      const responseJson = res.getBody();
+    
+      if (responseJson && responseJson.id) {
+        bru.setEnvVar("topUpId", responseJson.id);
+      }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
