@@ -1,0 +1,41 @@
+meta {
+  name: Create Vendor
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{credytApiUrl}}/vendors
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Google",
+    "external_id": "google"
+  }
+}
+
+script:pre-request {
+  const { v4 } = require('uuid');
+  
+  const generateUuidWithoutHyphens = () => v4().replace(/-/g,"");
+  const externalId = `${generateUuidWithoutHyphens()}`;
+  bru.setVar("vendorExternalId", externalId);
+}
+
+script:post-response {
+  if(res.status === 201){
+    const responseJson = res.getBody();
+  
+    if (responseJson && responseJson.id) {
+      bru.setEnvVar("vendorId", responseJson.id);
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
