@@ -1,0 +1,74 @@
+meta {
+  name: Create a Free Tier Product (Promotional)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{credytApiUrl}}/products
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Free Tier Product",
+    "code": "free_tier_01",
+    "entitlements": [
+      {
+        "name": "Daily Reward",
+        "asset": "CREDIT",
+        "amount": 50,
+        "purpose": "promotion",
+        "refresh": {
+          "interval": "day",
+          "strategy": "expire_and_replace"
+        },
+        "accounting": {
+          "revenue_basis": 0.0,
+          "cost_basis": "auto"
+        }
+      }
+    ],
+    "prices": [
+      {
+        "name": "Image Generation",
+        "type": "usage_based",
+        "billing_model": {
+          "type": "real_time"
+        },
+        "usage_calculation": {
+          "event_type": "image_generated",
+          "usage_type": "unit"
+        },
+        "pricing": [
+          {
+            "asset": "CREDIT",
+            "values": [
+              {
+                "unit_price": 5
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "publish": true
+  }
+}
+
+script:post-response {
+  if(res.status === 201){
+    const responseJson = res.getBody();
+
+    if (responseJson && responseJson.id) {
+      bru.setEnvVar("freeProductId", responseJson.id);
+      bru.setEnvVar("freeProductCode", responseJson.code);
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

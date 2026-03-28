@@ -1,0 +1,35 @@
+meta {
+  name: Send Usage Events
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{credytApiUrl}}/events
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "customer_id": "{{customerId}}",
+    "events": [
+      {
+        "id": "{{$randomUUID}}",
+        "event_type": "image_generated",
+        "occurred_at": "{{$isoTimestamp}}",
+        "subject": "img_{{$randomUUID}}",
+        "description": "Image Generated"
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
