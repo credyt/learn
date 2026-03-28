@@ -1,11 +1,11 @@
 meta {
-  name: Get Product Details
+  name: Check Customer Balances
   type: http
-  seq: 4
+  seq: 6
 }
 
 get {
-  url: {{credytApiUrl}}/products/{{productId}}
+  url: {{credytApiUrl}}/customers/{{customerId}}/wallet
   body: none
   auth: inherit
 }

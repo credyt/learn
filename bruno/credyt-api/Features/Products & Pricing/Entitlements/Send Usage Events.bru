@@ -1,25 +1,29 @@
 meta {
-  name: Simulate Usage
+  name: Send Usage Events
   type: http
-  seq: 4
+  seq: 5
 }
 
 post {
-  url: {{credytApiUrl}}/products/{{productId}}/default/simulate-usage
+  url: {{credytApiUrl}}/events
   body: json
   auth: inherit
 }
 
+headers {
+  Content-Type: application/json
+}
+
 body:json {
   {
+    "customer_id": "{{customerId}}",
     "events": [
       {
         "id": "{{$randomUUID}}",
         "event_type": "api_call",
         "occurred_at": "{{$isoTimestamp}}",
         "subject": "req_{{$randomUUID}}",
-        "description": "API Call",
-        "data": {}
+        "description": "API Call"
       }
     ]
   }
