@@ -1,7 +1,7 @@
 meta {
-  name: Create a Product with Entitlements
+  name: Create a Free Tier Product (Promotional)
   type: http
-  seq: 2
+  seq: 3
 }
 
 post {
@@ -12,46 +12,25 @@ post {
 
 body:json {
   {
-    "name": "Premium Plan",
-    "code": "premium_monthly_01",
-    "description": "Standard monthly subscription with included credit allowance.",
+    "name": "Free Tier Product",
+    "code": "free_tier_01",
     "entitlements": [
       {
-        "name": "Monthly Credit Allowance",
+        "name": "Daily Reward",
         "asset": "CREDIT",
-        "amount": 1000,
-        "purpose": "bundled",
+        "amount": 50,
+        "purpose": "promotion",
         "refresh": {
-          "interval": "month",
+          "interval": "day",
           "strategy": "expire_and_replace"
         },
         "accounting": {
-          "revenue_basis": 0,
+          "revenue_basis": 0.0,
           "cost_basis": "auto"
         }
       }
     ],
     "prices": [
-      {
-        "name": "Monthly Subscription Fee",
-        "type": "fixed",
-        "billing_model": {
-          "type": "recurring",
-          "recurring": {
-            "interval": "month"
-          }
-        },
-        "pricing": [
-          {
-            "asset": "USD",
-            "values": [
-              {
-                "unit_price": 20
-              }
-            ]
-          }
-        ]
-      },
       {
         "name": "Image Generation",
         "type": "usage_based",
@@ -67,7 +46,7 @@ body:json {
             "asset": "CREDIT",
             "values": [
               {
-                "unit_price": 10
+                "unit_price": 5
               }
             ]
           }
@@ -83,8 +62,8 @@ script:post-response {
     const responseJson = res.getBody();
 
     if (responseJson && responseJson.id) {
-      bru.setEnvVar("productId", responseJson.id);
-      bru.setEnvVar("productCode", responseJson.code);
+      bru.setEnvVar("freeProductId", responseJson.id);
+      bru.setEnvVar("freeProductCode", responseJson.code);
     }
   }
 }

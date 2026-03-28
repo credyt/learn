@@ -1,7 +1,7 @@
 meta {
   name: Send Usage Events
   type: http
-  seq: 5
+  seq: 6
 }
 
 post {
@@ -20,10 +20,10 @@ body:json {
     "events": [
       {
         "id": "{{$randomUUID}}",
-        "event_type": "api_call",
+        "event_type": "image_generated",
         "occurred_at": "{{$isoTimestamp}}",
-        "subject": "req_{{$randomUUID}}",
-        "description": "API Call"
+        "subject": "img_{{$randomUUID}}",
+        "description": "Image Generated"
       }
     ]
   }
