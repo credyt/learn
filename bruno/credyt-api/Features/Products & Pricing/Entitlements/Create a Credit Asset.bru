@@ -1,0 +1,36 @@
+meta {
+  name: Create a Credit Asset
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{credytApiUrl}}/assets
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "code": "CREDIT",
+    "name": "Credits",
+    "precision": 2,
+    "symbol": "C",
+    "label": "CREDIT",
+    "rates": [
+      {
+        "source": "USD",
+        "rate": 0.01
+      }
+    ]
+  }
+}
+
+script:pre-request {
+  bru.setEnvVar("assetCode", req.getBody().code);
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

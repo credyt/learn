@@ -1,0 +1,31 @@
+meta {
+  name: Simulate Usage
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{credytApiUrl}}/products/{{productId}}/default/simulate-usage
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "events": [
+      {
+        "id": "{{$randomUUID}}",
+        "event_type": "api_call",
+        "occurred_at": "{{$isoTimestamp}}",
+        "subject": "req_{{$randomUUID}}",
+        "description": "API Call",
+        "data": {}
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
