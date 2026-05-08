@@ -1,0 +1,20 @@
+meta {
+  name: Get Vendor Details
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{credytApiUrl}}/vendors/{{vendorId}}
+  body: none
+  auth: inherit
+}
+
+vars:pre-request {
+  vendorId: vnd_42ev3a14dkfah85fm2xjn0x5dn
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

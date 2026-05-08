@@ -1,0 +1,16 @@
+meta {
+  name: Get account context
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{credytApiUrl}}/accounts/self
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

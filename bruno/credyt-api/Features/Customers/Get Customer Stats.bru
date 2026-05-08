@@ -1,0 +1,33 @@
+meta {
+  name: Get Customer Stats
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{credytApiUrl}}/customers/{{customerId}}/stats
+  body: none
+  auth: inherit
+}
+
+vars:pre-request {
+  customerId: cust_44g7rawx84h0p09t452m0bfexv
+}
+
+script:post-response {
+  if(res.status === 200){
+    const responseJson = res.getBody();
+  
+    if (responseJson) {
+      bru.setEnvVar("customerId", responseJson.id);
+    }
+  }
+  
+  
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,20 @@
+meta {
+  name: Get Vendor By External ID
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{credytApiUrl}}/vendors?external_id=google
+  body: none
+  auth: inherit
+}
+
+params:query {
+  external_id: google
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
